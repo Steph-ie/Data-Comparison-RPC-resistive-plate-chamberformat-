@@ -126,10 +126,10 @@ def read_normal_format_file(filename):
 def main():
     # File path configuration after swapping
     # Correct List: Second Document Format
-    correct_filename = r"/Users/stephanie/Desktop/JUNO/JUNO Data Comparison/RPCRates_Count_60s.txt"
+    correct_filename = r"#file path of your file. "
     
     # Checklist: Standard, conventional format
-    checking_filename = r"/Users/stephanie/Desktop/JUNO/JUNO Data Comparison/Tang's RPC.txt"
+    checking_filename = r"#file path of your file. "
     
     correct_list = read_rpc_format_file(correct_filename)
     checking_list = read_normal_format_file(checking_filename)
@@ -148,7 +148,7 @@ if __name__ == "__main__":
     main()
     
     # Checklist: Standard, conventional format
-    checking_filename = r"/Users/stephanie/Desktop/JUNO/JUNO Data Comparison/Tang's RPC.txt"
+    checking_filename = r"#file path of your file. "
     
     correct_list = read_rpc_format_file(correct_filename)
     checking_list = read_normal_format_file(checking_filename)
