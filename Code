@@ -1,0 +1,167 @@
+from collections import Counter
+import re
+
+def compare_labels(correct_list, checking_list):
+    correct_counts = Counter(correct_list)
+    checking_counts = Counter(checking_list)
+    
+    missing = []
+    # Returns the label based on value of the labels
+    for label in sorted(correct_counts.keys(), key=lambda x: int(x) if x.isdigit() else x):
+        diff = correct_counts[label] - checking_counts[label]
+        if diff > 0:
+            missing.extend([str(label)] * diff)
+            
+    return missing
+
+def read_rpc_format_file(filename):
+    """Read another type of file, including num_num format"""
+    encodings = ['utf-8', 'latin-1', 'cp1252']
+    for enc in encodings:
+        try:
+            positions = []
+            with open(filename, 'r', encoding=enc) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    # match the format such as num_num，extract label in the front and back
+                    match = re.search(r'(\d+)_(\d+)', line)
+                    if match:
+                        # If need the number after _ use: group(2)，before use: group(1)
+                        positions.append(match.group(2))
+            return positions
+        except UnicodeDecodeError:
+            continue
+        except FileNotFoundError:
+            return None
+    return None
+
+def read_normal_format_file(filename):
+    """Read normal numbers or txt. files"""
+    encodings = ['utf-8', 'latin-1', 'cp1252']
+    for enc in encodings:
+        try:
+            positions = []
+            with open(filename, 'r', encoding=enc) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    tokens = line.replace(',', ' ').split()
+                    for token in tokens:
+                        if token.strip().isdigit():
+                            positions.append(token.strip())
+            return positions
+        except UnicodeDecodeError:
+            continue
+        except FileNotFoundError:
+            return None
+    return None
+
+def main():
+    # File path configuration after swapping
+    # Correct List: Second Document Format
+    correct_filename = r"from collections import Counter
+import re
+
+def compare_labels(correct_list, checking_list):
+    correct_counts = Counter(correct_list)
+    checking_counts = Counter(checking_list)
+    
+    missing = []
+    #Sort the numbers and output the missing values.
+    for label in sorted(correct_counts.keys(), key=lambda x: int(x) if x.isdigit() else x):
+        diff = correct_counts[label] - checking_counts[label]
+        if diff > 0:
+            missing.extend([str(label)] * diff)
+            
+    return missing
+
+def read_rpc_format_file(filename):
+    """Read text lines containing 'number_number' from the second document format."""
+    encodings = ['utf-8', 'latin-1', 'cp1252']
+    for enc in encodings:
+        try:
+            positions = []
+            with open(filename, 'r', encoding=enc) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    # Match patterns in the form of "number_number" and extract the identifier that follows or precedes it.
+                    match = re.search(r'(\d+)_(\d+)', line)
+                    if match:
+                        # If you need the number following the underscore, use group(2); for the one preceding it, use group(1).
+                        positions.append(match.group(2))
+            return positions
+        except UnicodeDecodeError:
+            continue
+        except FileNotFoundError:
+            return None
+    return None
+
+def read_normal_format_file(filename):
+    """Read documents in standard numeric-only or list format"""
+    encodings = ['utf-8', 'latin-1', 'cp1252']
+    for enc in encodings:
+        try:
+            positions = []
+            with open(filename, 'r', encoding=enc) as f:
+                for line in f:
+                    line = line.strip()
+                    if not line:
+                        continue
+                    tokens = line.replace(',', ' ').split()
+                    for token in tokens:
+                        if token.strip().isdigit():
+                            positions.append(token.strip())
+            return positions
+        except UnicodeDecodeError:
+            continue
+        except FileNotFoundError:
+            return None
+    return None
+
+def main():
+    # File path configuration after swapping
+    # Correct List: Second Document Format
+    correct_filename = r"/Users/stephanie/Desktop/JUNO/JUNO Data Comparison/RPCRates_Count_60s.txt"
+    
+    # Checklist: Standard, conventional format
+    checking_filename = r"/Users/stephanie/Desktop/JUNO/JUNO Data Comparison/Tang's RPC.txt"
+    
+    correct_list = read_rpc_format_file(correct_filename)
+    checking_list = read_normal_format_file(checking_filename)
+    
+    if correct_list is None or checking_list is None:
+        print("Error: Could not find one or both files. Check your folder path.")
+        return
+        
+    missing_items = compare_labels(correct_list, checking_list)
+    missing_str = ", ".join(missing_items) if missing_items else "0"
+    
+    # Output missing RPC locations
+    print(missing_str)
+
+if __name__ == "__main__":
+    main()
+    
+    # Checklist: Standard, conventional format
+    checking_filename = r"/Users/stephanie/Desktop/JUNO/JUNO Data Comparison/Tang's RPC.txt"
+    
+    correct_list = read_rpc_format_file(correct_filename)
+    checking_list = read_normal_format_file(checking_filename)
+    
+    if correct_list is None or checking_list is None:
+        print("Error: Could not find one or both files. Check your folder path.")
+        return
+        
+    missing_items = compare_labels(correct_list, checking_list)
+    missing_str = ", ".join(missing_items) if missing_items else "0"
+    
+    # Return missing RPC position
+    print(missing_str)
+
+if __name__ == "__main__":
+    main()
